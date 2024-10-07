@@ -1,0 +1,261 @@
+
+{% extends "base1.html" %}
+
+{% block content%}
+<style>
+
+#table{
+display:none;
+}
+</style>
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+<div class="card-header">
+ <h2 class="text-center text-primary">Generate Report</h2>
+   </div>
+  <div class="card-body">
+
+  <form method="post" style="padding: 20px;">
+
+
+<div class="mb-3 row">
+ <label for="date" class="col-sm-3 col-form-label"><b>Select Date:</b></label>
+ <div class="col-sm-9">
+<input type="date" name="date" id="date" class="form-control" required/>
+
+    </div>
+    </div>
+
+
+<div class="mb-3 row">
+ <label for="shift" class="col-sm-3 col-form-label"><b>Select Shift:</b></label>
+ <div class="col-sm-9">
+  <select name="shift" class="form-control" id="shift" aria-label="Default select example">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+  </select>
+    </div>
+    </div>
+
+
+
+
+  <div class="text-center mb-3">
+<input type="button" value="View Daily Report" class="btn btn-primary mr-5" onclick="showdaily()"/>
+<input type="button" value="View Hourly Report" class="btn btn-primary mr-5" onclick="show()"/>
+<input type="button"  value="Download Report" onclick="display()" style="visibility:hidden;" id="download" class="btn btn-primary" />
+  </div>
+  </form>
+  </div>
+  </div>
+ </div>
+ </div>
+</div>
+
+
+ <div class="container-fluid">
+   <p id="p" class="mb-3" style="display:none;"><b>Hourly Report:</b></p>
+      <table id="table" class="table border-primary rounded" style="display:none;">
+    <thead class="table-primary">
+	<tr>
+	<th>Operator code</th>
+	<th>Operator Name</th>
+	<th>Machine code</th>
+	<th>Model Name</th>
+	<th>Operation</th>
+	<th>Date</th>
+	<th>Shift</th>
+	<th>Hour</th>
+	<th>Heat no</th>
+	<th>produced</th>
+	<th>passed</th>
+	<th>reject</th>
+	<th>Material Rejection Type</th>
+	<th>Material Rejection count</th>
+	<th>Process Rejection Type</th>
+	<th>Process Rejection count</th>
+	<th>Has Loss</th><th>lossno</th>
+	<th>loss in min</th>
+	</tr>
+    </thead>
+     <tbody id="tablebody">
+	</tbody>
+   </table>
+  </div>
+
+
+
+
+
+ <div class="container" >
+   <p id="dailyp" class="mb-3" style="display:none;"><b>Daily Report:</b></p>
+      <table id="dailytable" style="display:none;" class="table table-bordered border-primary rounded">
+    <thead class="table-primary">
+	<tr>
+	<th>Operator code</th>
+	<th>Operator Name</th>
+	<th>Machine code</th>
+	<th>Model Name</th>
+	<th>Operation</th>
+	<th>Date</th>
+	<th>Shift</th>
+	<th>Total produced</th>
+	<th>Total passed</th>
+	<th>Total reject</th>
+	<th>Total Material Rejection count</th>
+	<th>Total Process Rejection count</th>
+	<th>Total loss in min</th>
+	</tr>
+    </thead>
+     <tbody id="dailytablebody">
+	</tbody>
+   </table>
+  </div>
+
+
+
+
+<script>
+function display()
+{
+
+var date=document.getElementById("date").value;
+var shift=document.getElementById("shift").value;
+var report=''
+if(document.getElementById("download").value=="Download daily report"){
+report='dailydata'
+
+}else if(document.getElementById("download").value=="Download Hourly report"){
+report='hourlydata'
+}
+
+
+fetch('/generate',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `date=${encodeURIComponent(date)}&shift=${encodeURIComponent(shift)}&report=${encodeURIComponent(report)}`
+})
+.then((response) => response.json())
+.then((data) => {
+
+if(data){
+ const anchor = document.createElement("a");
+  anchor.href = "{{ url_for("static",filename="test1.xlsx")}}";
+  anchor.download = "test.xlsx";
+  
+  document.body.appendChild(anchor);
+  anchor.click();
+}
+}).catch((error) => {
+alert(error);
+}
+)
+}
+
+
+function show()
+{
+var date=document.getElementById("date").value;
+var shift=document.getElementById("shift").value;
+fetch('/viewreportgenerate',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `date=${encodeURIComponent(date)}&shift=${encodeURIComponent(shift)}`
+})
+.then((response) => response.json())
+.then((data) => {
+document.getElementById("tablebody").innerHTML="";
+var a='';
+if(data['data'].length>0)
+{
+
+for(let i=0;i<data['data'].length;i++)
+{
+	a+="<tr>"
+
+	for(let j=0;j<data['data'][i].length;j++){
+		a+="<td>"+data['data'][i][j]+"</td>";
+	}
+	a+="</tr>"
+}
+}
+else{
+a+='<tr><td colspan="19" class="alert alert-danger text-center">No Data Found</td></tr>'
+
+}
+document.getElementById("tablebody").innerHTML=a;
+document.getElementById("table").style.display='block';
+document.getElementById("p").style.display='block';
+
+document.getElementById("dailytable").style.display='none';
+document.getElementById("dailyp").style.display='none';
+
+document.getElementById("download").value='Download Hourly report';
+document.getElementById("download").style.visibility='visible';
+
+}
+).catch((error) => {
+alert("Enter all Fields");
+}
+)
+
+}
+
+
+function showdaily()
+{
+var date=document.getElementById("date").value;
+var shift=document.getElementById("shift").value;
+fetch('/viewdailyreportgenerate',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `date=${encodeURIComponent(date)}&shift=${encodeURIComponent(shift)}`
+})
+.then((response) => response.json())
+.then((data) => {
+document.getElementById("dailytablebody").innerHTML="";
+var a='';
+if(data['data'].length>0)
+{
+
+for(let i=0;i<data['data'].length;i++)
+{
+	a+="<tr>"
+
+	for(let j=0;j<data['data'][i].length;j++){
+		a+="<td>"+data['data'][i][j]+"</td>";
+	}
+	a+="</tr>"
+}
+}
+else{
+a+='<tr><td colspan="19" class="alert alert-danger text-center">No Data Found</td></tr>'
+
+}
+document.getElementById("dailytablebody").innerHTML=a;
+document.getElementById("dailytable").style.display='block';
+document.getElementById("dailyp").style.display='block';
+
+document.getElementById("table").style.display='none';
+document.getElementById("p").style.display='none';
+document.getElementById("download").value='Download daily report';
+document.getElementById("download").style.visibility='visible';
+
+}
+).catch((error) => {
+alert("Enter all Fields");
+}
+)
+
+}
+
+
+
+
+
+</script>
+{% endblock %}

@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html>
+<head>
+ <meta charset="utf-8">
+ <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<title>Kusalava Industries | Operator Site</title>
+</head>
+<style>
+#success{
+display:none;
+}
+#fail{
+display:none;
+}
+
+input[type="text"]{
+width:90px;
+
+}
+select option{
+width:100px;
+
+}
+</style>
+<body>
+<div style="background-color: #343a40;padding: 20px;text-align: center;margin-bottom: 20px;">
+<img  style=" max-width: 150px;height: auto;"class="img-fluid" src="{{ url_for('static',filename='kusalava.jpg') }}" alt="kusalava"/>
+<h3 style="color: #fff;font-size: 28px;font-weight: bold;margin-top: 10px;">Operator</h3>
+</div>
+
+<div class="container-fluid">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+	<h3 style="color:steelblue;">DATA RECORD SHEET</h3>
+	</div>
+	<div class="col-md-6 text-md-right">
+	<h5 style="float:right;">Date:<span id="currentDate"></span></h5>
+        </div>
+    </div>
+</div>
+
+<h4 style="text-align: center;font-size: 20px;">Welcome {{session['name']}} </h4>
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label"><b>Employee Code:</b></label>
+    <div class="col-sm-10">
+      <input type="text" name="empcode" id="empcode"style="width:150px;" value="{{session['empcode']}}" class="form-control" readonly/>
+    </div>
+</div>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <input type="button" class="btn btn-primary btn-lg" onclick="f1()" value="Click here"/>
+            <input type="button" value="logout" class="btn btn-primary btn-lg float-right" onclick="location.href='/'"/>	
+
+        </div>
+    </div>
+</div>
+<br>
+<div id="success" class="container-fluid " style="padding:10px;">
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label"><b>Employee Name:</b></label>
+    <div class="col-sm-10">
+      <input type="text" name="empname" id="empname" style="width:150px;" class="form-control" disabled>
+    </div>
+</div>
+
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label"><b>Machine Code:</b></label>
+    <div class="col-sm-10">
+      <input type="text" name="machinecode" id="machinecode"style="width:150px;" class="form-control" disabled>
+    </div>
+</div>
+
+
+<div class="mb-3 row">
+    <label class="col-sm-2 col-form-label"><b>Shift:</b></label>
+    <div class="col-sm-10">
+      <input type="text" name="shift" id="shift"style="width:150px;" class="form-control" disabled>
+    </div>
+</div>
+
+
+
+<div class="row">
+<div class="mb-3 col row">
+    <label class="col-sm-2 col-form-label"><b>Model:</b></label>
+    <div class="col-sm-10">
+      <input type="text" name="modelname" id="modelname" style="width:150px;" class="form-control" required="required">
+    </div>
+</div>
+
+<div class="mb-3 col row">
+    <label class="col-sm-3 col-form-label"><b>Operation:</b></label>
+    <div class="col-sm-1">
+      <input type="text" name="operation" id="operation" style="width:150px;" class="form-control" required="required">
+    </div>
+</div>
+
+
+</div>
+
+
+<table style="padding:10px;" class="table table-bordered border-primary rounded">
+  <thead class="table-primary">
+<tr>
+<th>Hourly Data</th>
+<th>1</th>
+<th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>Total</th>
+</tr>
+</thead>
+<tr>
+<th>Heat No</th>
+<td><input type="text" class="form-control" id="heatno1"></td>
+<td><input type="text" class="form-control" id="heatno2"></td>
+<td><input type="text" class="form-control" id="heatno3"></td>
+<td><input type="text" class="form-control" id="heatno4"></td>
+<td><input type="text" class="form-control" id="heatno5"></td>
+<td><input type="text" class="form-control" id="heatno6"></td>
+<td><input type="text" class="form-control" id="heatno7"></td>
+<td><input type="text" class="form-control" id="heatno8"></td>
+<td></td>
+</tr>
+
+<tr>
+<th>Produced Qty</th>
+<td><input type="text" class="form-control" id="produce1" oninput="rejection(1)" ></td>
+<td><input type="text" class="form-control" id="produce2" oninput="rejection(2)"></td>
+<td><input type="text" class="form-control" id="produce3" oninput="rejection(3)"></td>
+<td><input type="text" class="form-control" id="produce4" oninput="rejection(4)"></td>
+<td><input type="text" class="form-control" id="produce5" oninput="rejection(5)"></td>
+<td><input type="text" class="form-control" id="produce6" oninput="rejection(6)"></td>
+<td><input type="text" class="form-control"id="produce7" oninput="rejection(7)"></td>
+<td><input type="text" class="form-control" id="produce8" oninput="rejection(8)"></td>
+<td><input type="text" class="form-control" id="totalproduce" disabled></td>
+
+</tr>
+
+<tr>
+<th>Passed Qty</th>
+<td><input type="text" class="form-control" id="pass1" oninput="rejection(1)"></td>
+<td><input type="text" class="form-control"  id="pass2" oninput="rejection(2)"></td>
+<td><input type="text" class="form-control" id="pass3" oninput="rejection(3)" ></td>
+<td><input type="text" class="form-control" id="pass4" oninput="rejection(4)"></td>
+<td><input type="text" class="form-control" id="pass5" oninput="rejection(5)" ></td>
+<td><input type="text" class="form-control" id="pass6" oninput="rejection(6)"></td>
+<td><input type="text" class="form-control" id="pass7" oninput="rejection(7)"></td>
+<td><input type="text" class="form-control" id="pass8" oninput="rejection(8)"></td>
+<td><input type="text" class="form-control" id="totalpass" disabled></td>
+
+</tr>
+
+<tr>
+<th>Rejection Qty</th>
+<td><input type="text" id="reject1" class="form-control" ></td>
+<td><input type="text" class="form-control" id="reject2"/></td>
+<td><input type="text" class="form-control" id="reject3"/></td>
+<td><input type="text" class="form-control" id="reject4"/></td>
+<td><input type="text" class="form-control" id="reject5"/></td>
+<td><input type="text" class="form-control" id="reject6"/></td>
+<td><input type="text" class="form-control" id="reject7"/></td>
+<td><input type="text" class="form-control" id="reject8"/></td>
+<td><input type="text" class="form-control" id="totalreject" disabled/></td>
+
+</tr>
+
+<tr>
+<th>Material Rejection Type</th>
+<td><select disabled id="materialrejecttype1"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype2"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype3"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype4"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype5"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype6"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype7"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="materialrejecttype8"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<th>Material rejection count</th>
+<td><input type="text" id="materialrejectcount1" class="form-control" oninput="processcount(1)"readonly></td>
+<td><input type="text" class="form-control" id="materialrejectcount2" oninput="processcount(2)"readonly/></td>
+<td><input type="text" class="form-control" id="materialrejectcount3" oninput="processcount(3)"readonly/></td>
+<td><input type="text" class="form-control" id="materialrejectcount4" oninput="processcount(4)" readonly/></td>
+<td><input type="text" class="form-control" id="materialrejectcount5" oninput="processcount(5)" readonly/></td>
+<td><input type="text" class="form-control" id="materialrejectcount6" oninput="processcount(6)" readonly/></td>
+<td><input type="text" class="form-control" id="materialrejectcount7" oninput="processcount(7)" readonly/></td>
+<td><input type="text" class="form-control" id="materialrejectcount8" oninput="processcount(8)" readonly/></td>
+<td><input type="text" class="form-control" id="totalmaterialrejectcount" readonly/></td>
+
+</tr>
+
+<tr>
+<th>Process Rejection Type</th>
+<td><select disabled id="processrejecttype1">
+<option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype2">
+<option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype3">
+<option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype4">
+<option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype5"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype6"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype7"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+<td><select disabled id="processrejecttype8"><option selected disabled value=""></option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option></select>
+</td>
+
+<td></td>
+</tr>
+
+<tr>
+<th>Process rejection count</th>
+<td><input type="text" id="processrejectcount1" class="form-control" readonly></td>
+<td><input type="text" class="form-control" id="processrejectcount2" readonly/></td>
+<td><input type="text" class="form-control" id="processrejectcount3" readonly/></td>
+<td><input type="text" class="form-control" id="processrejectcount4" readonly/></td>
+<td><input type="text" class="form-control" id="processrejectcount5" readonly/></td>
+<td><input type="text" class="form-control" id="processrejectcount6" readonly/></td>
+<td><input type="text" class="form-control" id="processrejectcount7"readonly/></td>
+<td><input type="text" class="form-control" id="processrejectcount8"readonly/></td>
+<td><input type="text" class="form-control" id="totalprocessrejectcount"readonly/></td>
+</tr>
+
+<tr>
+<th>Has Loss</th>
+<td><select onchange="enabled(this.name)" id="hasloss1" name="1"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss2" name="2"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss3" name="3"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss4" name="4"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss5" name="5"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss6" name="6"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss7" name="7"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td><select onchange="enabled(this.name)" id="hasloss8" name="8"><option value="NO">NO</option><option value="Yes">Yes</option></select></td>
+<td></td>
+</tr>
+
+<tr id="lossnotr">
+</tr>
+
+<tr>
+<th>Loss in min</th>
+<td><input type="text"  class="form-control" id="lossinmin1" oninput="processcount(1)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin2" oninput="processcount(2)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin3" oninput="processcount(3)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin4" oninput="processcount(4)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin5" oninput="processcount(5)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin6" oninput="processcount(6)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin7" oninput="processcount(7)"readonly></td>
+<td><input type="text" class="form-control" id="lossinmin8" oninput="processcount(8)"readonly></td>
+<td><input type="text" class="form-control" id="totallossinmin" readonly></td>
+</tr>
+
+
+<tr>
+<th></th>
+<td><input type="submit"class="btn btn-primary" id="button1" onclick="datastore(1)"/></td>
+<td><input type="submit"class="btn btn-primary" id="button2" onclick="datastore(2)" /></td>
+<td><input type="submit"class="btn btn-primary" id="button3" onclick="datastore(3)"/></td>
+<td><input type="submit" class="btn btn-primary" id="button4" onclick="datastore(4)"/></td>
+<td><input type="submit"class="btn btn-primary"  id="button5" onclick="datastore(5)"/></td>
+<td><input type="submit" class="btn btn-primary"  id="button6" onclick="datastore(6)"/></td>
+<td><input type="submit" class="btn btn-primary" id="button7" onclick="datastore(7)"/></td>
+<td><input type="submit" class="btn btn-primary" id="button8" onclick="datastore(8)"/></td>
+<td></td>
+</tr>
+
+</table>
+
+</div>
+<b><div id="fail" class="text-danger pt-3">Invalid Employee Code</div></b>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+</body>
+<script>
+
+document.getElementById("currentDate").innerHTML = new Date().toJSON().slice(0, 10);
+
+function processcount(num)
+{
+a=document.getElementById("reject"+num).value
+b=document.getElementById("materialrejectcount"+num).value
+document.getElementById("processrejectcount"+num).value=a-b;
+
+var totalprocessrejectcount=0;
+var totalmaterialrejectcount=0;
+var totallossinmin=0;
+
+
+for(let i=1;i<=8;i++){
+if(document.getElementById("processrejectcount"+i).value){
+totalprocessrejectcount+=parseInt(document.getElementById("processrejectcount"+i).value);
+}
+}
+
+for(let i=1;i<=8;i++){
+if(document.getElementById("materialrejectcount"+i).value){
+totalmaterialrejectcount+=parseInt(document.getElementById("materialrejectcount"+i).value);
+}
+}
+for(let i=1;i<=8;i++){
+if(document.getElementById("lossinmin"+i).value){
+totallossinmin+=parseInt(document.getElementById("lossinmin"+i).value);
+}
+}
+
+document.getElementById("totalprocessrejectcount").value=totalprocessrejectcount;
+document.getElementById("totalmaterialrejectcount").value=totalmaterialrejectcount;
+document.getElementById("totallossinmin").value=totallossinmin;
+
+
+}
+
+
+function rejection(num){
+a=document.getElementById("produce"+num).value;
+b=document.getElementById("pass"+num).value;
+document.getElementById("reject"+num).value=a-b;
+
+
+var totalproduce=0;
+var totalpass=0;
+var totalreject=0;
+var totallossinmin=0;
+var totalprocessrejectcount=0;
+var totalmaterialrejectcount=0;
+
+for(let i=1;i<=8;i++){
+
+if(document.getElementById("produce"+i).value){
+totalproduce+=parseInt(document.getElementById("produce"+i).value);
+}
+if(document.getElementById("pass"+i).value){
+totalpass+=parseInt(document.getElementById("pass"+i).value);
+}
+if(document.getElementById("reject"+i).value){
+totalreject+=parseInt(document.getElementById("reject"+i).value);
+}
+if(document.getElementById("lossinmin"+i).value){
+totallossinmin+=parseInt(document.getElementById("lossinmin"+i).value);
+}
+if(document.getElementById("processrejectcount"+i).value){
+totalprocessrejectcount+=parseInt(document.getElementById("processrejectcount"+i).value);
+}
+if(document.getElementById("materialrejectcount"+i).value){
+totalmaterialrejectcount+=parseInt(document.getElementById("materialrejectcount"+i).value);
+}
+
+}
+
+document.getElementById("totalproduce").value=totalproduce;
+document.getElementById("totalpass").value=totalpass;
+document.getElementById("totalreject").value=totalreject;
+document.getElementById("totalprocessrejectcount").value=totalprocessrejectcount;
+document.getElementById("totalmaterialrejectcount").value=totalmaterialrejectcount;
+
+document.getElementById("totallossinmin").value=totallossinmin;
+
+if(parseInt(document.getElementById("reject"+num).value)>0)
+{
+document.getElementById("processrejectcount"+num).removeAttribute('readonly');
+document.getElementById("materialrejectcount"+num).removeAttribute('readonly');
+document.getElementById("processrejecttype"+num).disabled=false;
+document.getElementById("materialrejecttype"+num).disabled=false;
+
+}
+else{
+document.getElementById("processrejectcount"+num).setAttribute('readonly',true);
+document.getElementById("materialrejectcount"+num).setAttribute('readonly',true);
+document.getElementById("processrejecttype"+num).disabled=true;
+document.getElementById("materialrejecttype"+num).disabled=true;
+
+
+}
+
+}
+
+function f1(){
+var empcode=document.getElementById("empcode").value;
+
+fetch('/getdata',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `empcode=${encodeURIComponent(empcode)}`}).then((response) => response.json())
+.then((data) => 
+{
+
+if(!data['output'])
+{
+document.getElementById("success").style.display="block";
+document.getElementById("fail").style.display="none";
+
+document.getElementById("lossnotr").innerHTML=" ";
+document.getElementById("lossnotr").innerHTML="<th>Loss No</th>";
+
+for(let i=1;i<=8;i++)
+{
+var id="lossno"+i;
+var style="width:100px";
+let a="<td><select id="+id+" style="+style+" disabled><option selected disabled value=''></option>";
+
+for(let j=0;j<data['data10'].length;j++)
+{
+a=a.concat("<option value="+data['data10'][j][0]+">"+data['data10'][j][0]+" : "+data['data10'][j][1]+"</option>")
+}
+a=a.concat("</select></td>")
+document.getElementById("lossnotr").innerHTML+=a;
+}
+document.getElementById("lossnotr").innerHTML+="<td></td>";
+
+for(let i=1;i<=8;i++)
+{
+if(data['data'+i].length>0)
+{
+
+document.getElementById("heatno"+i).value=data['data'+i][0][2];
+document.getElementById("produce"+i).value=data['data'+i][0][3];
+document.getElementById("pass"+i).value=data['data'+i][0][4];
+document.getElementById("reject"+i).value=data['data'+i][0][5];
+document.getElementById("lossno"+i).value=data['data'+i][0][6];
+document.getElementById("lossinmin"+i).value=data['data'+i][0][7];
+
+
+document.getElementById("materialrejecttype"+i).value=data['data'+i][0][8];
+document.getElementById("materialrejectcount"+i).value=data['data'+i][0][9];
+document.getElementById("processrejecttype"+i).value=data['data'+i][0][10];
+document.getElementById("processrejectcount"+i).value=data['data'+i][0][11];
+document.getElementById("hasloss"+i).value=data['data'+i][0][12];
+
+
+document.getElementById("heatno"+i).disabled=true;
+document.getElementById("produce"+i).disabled=true;
+document.getElementById("pass"+i).disabled=true;
+document.getElementById("reject"+i).disabled=true;
+document.getElementById("lossno"+i).disabled=true;
+/*document.getElementById("lossinmin"+i).disabled=true;*/
+document.getElementById("button"+i).disabled=true;
+document.getElementById("hasloss"+i).disabled=true;
+document.getElementById("materialrejectcount"+i).setAttribute('readonly',true);
+document.getElementById("processrejectcount"+i).setAttribute('readonly',true);
+
+}
+else{
+document.getElementById("heatno"+i).value="";
+document.getElementById("produce"+i).value="";
+document.getElementById("pass"+i).value="";
+document.getElementById("reject"+i).value="";
+document.getElementById("lossinmin"+i).value="";
+
+document.getElementById("heatno"+i).disabled=false;
+document.getElementById("produce"+i).disabled=false;
+document.getElementById("pass"+i).disabled=false;
+document.getElementById("reject"+i).disabled=false;
+/*document.getElementById("lossno"+i).disabled=false;*/
+/*document.getElementById("lossinmin"+i).disabled=false;*/
+
+document.getElementById("button"+i).disabled=false;
+}
+
+}
+
+document.getElementById("empname").value=data['data'];
+document.getElementById("machinecode").value=data['data9'][0];
+document.getElementById("shift").value=data['data9'][1];
+
+
+try {
+
+	document.getElementById("modelname").value=data['data1'][0][0];
+	document.getElementById("operation").value=data['data1'][0][1];
+	document.getElementById("modelname").disabled=true;
+	document.getElementById("operation").disabled=true;
+
+}catch(err) {
+	document.getElementById("modelname").value=" ";
+	document.getElementById("operation").value=" ";
+	document.getElementById("modelname").disabled=false;
+	document.getElementById("operation").disabled=false;
+}
+
+for(let i=1;i<=8;i++){
+rejection(i);
+
+}
+
+}
+else{
+document.getElementById("fail").style.display="block";
+document.getElementById("success").style.display="none";
+document.getElementById("fail").innerHTML=data['output'];
+}
+
+
+})
+
+.catch((error) => {
+document.getElementById("fail").style.display="block";
+document.getElementById("success").style.display="none";
+})
+}
+
+function datastore(num)
+{
+var heatno=document.getElementById("heatno"+num).value;
+var machinecode=document.getElementById("machinecode").value;
+var hour=num;
+var empname="{{session['name']}}";
+var empcode=document.getElementById("empcode").value;
+var produce=document.getElementById("produce"+num).value;
+var passed=document.getElementById("pass"+num).value;
+var reject=document.getElementById("reject"+num).value;
+var shift=document.getElementById("shift").value;
+var materialrejectiontype=document.getElementById("materialrejecttype"+num).value;
+var processrejectiontype=document.getElementById("processrejecttype"+num).value;
+var materialrejectioncount=document.getElementById("materialrejectcount"+num).value;
+var processrejectioncount=document.getElementById("processrejectcount"+num).value;
+
+var hasloss=document.getElementById("hasloss"+num).value;
+var lossno=document.getElementById("lossno"+num).value;
+var lossinmin=document.getElementById("lossinmin"+num).value;
+
+
+var modelname=document.getElementById("modelname").value;
+var operation=document.getElementById("operation").value;
+
+
+
+var totalmaterialrejectioncount=document.getElementById("totalmaterialrejectcount").value;
+var totalprocessrejectioncount=document.getElementById("totalprocessrejectcount").value;
+
+var totalproduce=document.getElementById("totalproduce").value;
+var totalpassed=document.getElementById("totalpass").value;
+var totalreject=document.getElementById("totalreject").value;
+var totallossinmin=document.getElementById("totallossinmin").value;
+console.log(totalmaterialrejectioncount	);
+
+if(modelname!=' ' && operation!=' ')
+{
+
+fetch('/datastore',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `hour=${encodeURIComponent(hour)}&heatno=${encodeURIComponent(heatno)}&produce=${encodeURIComponent(produce)}&reject=${encodeURIComponent(reject)}&lossno=${encodeURIComponent(lossno)}&lossinmin=${encodeURIComponent(lossinmin)}&shift=${encodeURIComponent(shift)}&empcode=${encodeURIComponent(empcode)}&machinecode=${encodeURIComponent(machinecode)}&passed=${encodeURIComponent(passed)}&modelname=${encodeURIComponent(modelname)}&operation=${encodeURIComponent(operation)}&hasloss=${encodeURIComponent(hasloss)}&processrejectioncount=${encodeURIComponent(processrejectioncount)}&processrejectiontype=${encodeURIComponent(processrejectiontype)}&materialrejectioncount=${encodeURIComponent(materialrejectioncount)}&materialrejectiontype=${encodeURIComponent(materialrejectiontype)}&empname=${encodeURIComponent(empname)}&totalmaterialrejectioncount=${encodeURIComponent(totalmaterialrejectioncount)}&totalprocessrejectioncount=${encodeURIComponent(totalprocessrejectioncount)}&totalproduce=${encodeURIComponent(totalproduce)}&totalreject=${encodeURIComponent(totalreject)}&totallossinmin=${encodeURIComponent(totallossinmin)}&totalpassed=${encodeURIComponent(totalpassed)}`})
+.then((response) => response.json())
+.then((data) => {
+if(data['success'])
+{
+alert("Data Entered Successfully!!!");
+location.reload()
+
+}
+else{
+alert("Data not Entered!!!");
+location.reload()
+
+}
+}
+).catch((error) => {
+
+alert("Data didn't Entered!!!");
+location.reload()
+})}
+else{
+alert("Fill all the required data");
+document.getElementById("modelname").style.border="1px solid red";
+document.getElementById("operation").style.border="1px solid red";
+}
+}
+
+
+function enabled(num){
+if(document.getElementById("hasloss"+num).value=="Yes")
+{
+document.getElementById("lossno"+num).disabled=false;
+document.getElementById("lossinmin"+num).removeAttribute('readonly');
+}
+else if(document.getElementById("hasloss"+num).value=="NO"){
+document.getElementById("lossno"+num).disabled=true;
+document.getElementById("lossinmin"+num).setAttribute('readonly',true);
+
+}
+
+}
+
+    function preventBack() { 
+        window.history.forward();  
+    } 
+      
+    setTimeout("preventBack()", 0); 
+      
+    window.onunload = function () { null };
+</script>
+</html>

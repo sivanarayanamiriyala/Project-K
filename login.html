@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>    
+<head>
+	<title>Login Page</title>
+ <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+<style>
+.divider:after,
+.divider:before {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+.h-custom {
+  height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+  .h-custom {
+    height: 100%;
+  }
+}
+
+</style>
+
+</head>
+<body>
+<section class="vh-100">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5" >
+        <img src="{{url_for('static', filename='logo.jpg')}}" style="width:25vw;border:3px solid steelblue;"class="img-fluid"
+          alt="Sample image">
+      </div>
+
+
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 rounded" style="border:10px solid steelblue;padding:30px 30px 15px 30px;margin-top:30px;">
+        <form method="POST" action="/validate" >
+
+	<h2 style="margin-bottom:20px;color:#0275d8;" class="text-center">Login</h2>
+
+      {% for message in get_flashed_messages() %}
+          <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+
+          <div class="form-outline mb-3">
+		<label><h6>Enter Your UserName</h6></label>
+            <input type="text" class="form-control w-100" id="username" placeholder="Enter your UserName"  name="username" required/>
+          </div>
+          <div class="form-outline mb-3">
+		<label><h6>Select your Designation</h6></label>
+		<select class="form-control w-100" id="designation" name="designation" aria-label="Default select example">
+		<option value="manager">Manager</option>
+		<option value="supervisor">Supervisor</option>
+		<option value="operator">Operator</option>
+		</select>
+          </div>
+          <div class="form-outline">
+		<input type="button" value="check" onclick="getuserinfo()" class="btn btn-primary float-right"/>
+     	     </div>
+		<br>
+
+
+          <div class="form-outline mb-2" style="color:red;"id="result">	</div>	
+
+
+
+          <div class="form-outline mb-3">
+		<label><h6>Enter Your PassWord</h6></label>
+            <input type="password"  class="form-control w-100" placeholder="Enter password" name="password" id="password" required/>
+     	     </div>
+
+
+          <div class="form-outline mb-3">
+		<a href="/forgotpassword">Forgot PassWord?</a>
+     	     </div>
+
+
+   <div class="text-center text-lg-start">
+            <input type="submit"id="login" class="btn btn-primary btn-lg" value="Login" disabled>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+  </div>
+</section>
+</body>
+<script>
+function getuserinfo(){
+var username=document.getElementById("username").value;
+var designation=document.getElementById("designation").value;
+
+fetch('/getuserinfo',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `username=${encodeURIComponent(username)}&designation=${encodeURIComponent(designation)}`}).then((response) => response.json())
+.then((data) => {
+if(data['data']){
+if(data['data'][1]!='NO'){
+
+var result="Name: "+data['data'][0]+" <br> Supervisor: "+data['data'][1];
+}
+else{
+var result="Name: "+data['data'][0]+" <br>";
+}
+document.getElementById("result").innerHTML=result;
+
+document.getElementById("login").disabled=false;
+
+}
+else{
+document.getElementById("result").innerHTML="Invalid details";
+
+}
+})
+
+.catch((error) => {
+alert("Error");
+
+})
+}
+
+
+
+
+</script>
+</html>

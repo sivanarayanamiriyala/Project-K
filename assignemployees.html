@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+ <div class="card-header">
+    <h2 class="text-center text-primary">Assign Operators</h2>
+   </div>
+     <div class="card-body">
+      {% for message in get_flashed_messages() %}
+          <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+      <form method="post" action="storeoperatorassignment">
+     <div class="mb-3">
+        <label for="supervisor" class="col-sm-3 col-form-label"><b>Select Supervisor:</b></label>
+ <div class="col-sm-9">
+            <select name="supervisor" id="supervisor" class="form-control">
+         {% for code in supervisor %}
+               <option value="{{ code[1] }}">{{ code[0] }} - {{ code[1] }}</option>
+          {% endfor %}
+           </select>
+</div>
+   </div>
+
+      <div class="mb-3">
+
+       <label for="empcode" class="col-sm-3 col-form-label"><b>Operator Code:</b></label>
+<div class="col-sm-9">
+      <select name="empcode" id="empcode" class="form-control col-sm-9">
+  {% for code in operator %}
+  <option value="{{ code[0] }}">{{ code[0] }} - {{ code[1] }}</option>
+   {% endfor %}
+    </select>
+    </div>
+</div>
+   <div class="text-center">
+   <button type="submit" class="btn btn-primary">Assign Employee</button>
+     </div>
+  </form>
+ </div>
+  </div>
+    </div>
+    </div>
+</div>
+{% endblock %}

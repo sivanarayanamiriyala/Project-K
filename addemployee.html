@@ -1,0 +1,72 @@
+
+{% extends "base.html" %}
+
+{% block content%}
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+<div class="card-header">
+ <h2 class="text-center text-primary">Add Employee</h2>
+   </div>
+  <div class="card-body">
+  <form method="post" style="padding: 20px;" action="storeemployee">
+<div >
+      {% for message in get_flashed_messages() %}
+          <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+
+</div>
+
+<div class="mb-3 row">
+ <label for="supervisor" class="col-sm-3 col-form-label"><b>Enter Employee Code:</b></label>
+ <div class="col-sm-9">
+      <input type="text" name="empcode" id="empcode" style="width:150px;" class="form-control" required>
+    </div>
+    </div>
+
+<div class="mb-3 row">
+ <label for="supervisor" class="col-sm-3 col-form-label"><b>Enter UserName:</b></label>
+ <div class="col-sm-9">
+      <input type="text" name="username" id="username" style="width:150px;" class="form-control" required>
+    </div>
+    </div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Enter  Name:</b></label>
+    <div class="col-sm-9">
+      <input type="text" name="name" id="name" style="width:150px;" class="form-control" required>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Enter password:</b></label>
+    <div class="col-sm-9">
+      <input type="text" name="password" id="password" style="width:150px;" class="form-control" required>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Select Designation</b></label>
+    <div class="col-sm-9">
+	<select name="designation" class="form-control w-25" id="designation" required>
+		<option value="manager">Manager</option>
+		<option value="supervisor">Supervisor</option>
+		<option value="operator">Operator</option>
+	</select>
+    </div>
+</div>
+  <div class="text-center mb-3">
+      <input type="submit" value="submit" class="btn btn-primary" >
+      <input type="button" value="modify" onclick="location.href='/modify'" class="btn btn-primary" >
+  </div>
+  </form>
+  </div>
+  </div>
+ </div>
+ </div>
+</div>
+
+
+{% endblock %}

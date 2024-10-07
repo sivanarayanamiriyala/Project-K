@@ -1,0 +1,177 @@
+<style>
+#userinfo{
+display:none;
+}
+</style>
+
+
+
+{% extends "base.html" %}
+
+{% block content%}
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+<div class="card-header">
+ <h2 class="text-center text-primary">Modify Employee data</h2>
+   </div>
+  <div class="card-body">
+<div >
+          <div class="alert alert-danger" id="flash" style="display:none;"></div>
+
+</div>
+<div >
+{% for messages in get_flashed_messages() %} 
+          <div class="alert alert-danger" id="flas">{{messages}}</div>
+{% endfor %}
+</div>
+
+
+
+
+<div class="mb-3 row">
+ <label for="supervisor" class="col-sm-3 col-form-label"><b>Enter Employee Code:</b></label>
+ <div class="col-sm-9">
+      <input type="text" name="enteredempcode" id="enteredempcode" style="width:150px;" class="form-control" required>
+    </div>
+    </div>
+
+  <div class="text-center mb-3">
+      <input type="button" value="submit"  onclick="getuserinformation()"class="btn btn-primary"/>
+  </div>
+
+  <form method="post" style="padding: 20px;" action="modifyemployeedata" >
+
+ <div class="container" id="userinfo">
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Employee Code:</b></label>
+    <div class="col-sm-9">
+      <input type="text" name="empcode" id="empcode" style="width:150px;" class="form-control" required readonly>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Enter  UserName:</b></label>
+    <div class="col-sm-9">
+      <input type="text" name="username" id="username" style="width:150px;" class="form-control" required>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Enter  Name:</b></label>
+    <div class="col-sm-9">
+      <input type="text" name="name" id="name" style="width:150px;" class="form-control" required>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Enter password:</b></label>
+    <div class="col-sm-9">
+      <input type="text" name="password" id="password" style="width:150px;" class="form-control" required>
+    </div>
+</div>
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Select Designation</b></label>
+    <div class="col-sm-9">
+	<select name="designation" class="form-control w-25" id="designation" required>
+		<option value="manager">Manager</option>
+		<option value="supervisor">Supervisor</option>
+		<option value="operator">Operator</option>
+	</select>
+    </div>
+</div>
+
+<div class="mb-3 row mt-3">
+    <div class="col-sm-3">
+      <input type="submit" value="save" class="btn btn-primary" >
+    </div>
+    <div class="col-sm-3">
+      <input type="button" value="Delete Employee Data" class="btn btn-primary" onclick="deleteemployee()">
+    </div>
+
+</div>
+
+
+  </div>
+
+
+
+
+
+  </form>
+  </div>
+  </div>
+ </div>
+ </div>
+</div>
+
+
+<script>
+function getuserinformation(){
+var enteredempcode=document.getElementById("enteredempcode").value;
+fetch('/getuserinformation',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `enteredempcode=${encodeURIComponent(enteredempcode)}`}).then((response) => response.json())
+.then((data) => {
+if(data['data'])
+{
+document.getElementById("empcode").value=data['data'][0];
+document.getElementById("username").value=data['data'][1];
+document.getElementById("name").value=data['data'][2];
+document.getElementById("password").value=data['data'][3];
+document.getElementById("designation").value=data['data'][4];
+document.getElementById("flash").innerHTML="";
+document.getElementById("userinfo").style.display="block";
+document.getElementById("flash").style.display="none";
+
+}
+
+else{
+document.getElementById("flash").innerHTML='Enter a valid Employee Code';
+document.getElementById("flash").style.display="block";
+document.getElementById("userinfo").style.display="none";
+}
+}
+)
+.catch((error) => {
+console.log(error);
+
+alert("Error",error);
+
+})
+}
+
+
+function deleteemployee(){
+
+var empcode=document.getElementById("empcode").value;
+fetch('/deleteemployee',{
+method: 'POST',
+headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+body: `empcode=${encodeURIComponent(empcode)}`}).then((response) => response.json())
+.then((data) =>{
+document.getElementById("flash").innerHTML='';
+document.getElementById("flash").innerHTML=data['data'];
+document.getElementById("flash").style.display="block";
+if(document.getElementById("flas")){
+document.getElementById("flas").style.display="none";
+}
+document.getElementById("userinfo").style.display="none";
+
+
+}).catch((error) => {
+alert(error);
+
+})
+
+}
+
+</script>
+{% endblock %}
+
+

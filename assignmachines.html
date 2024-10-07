@@ -1,0 +1,66 @@
+{% extends "base1.html" %}
+
+{% block content%}
+
+<div class="container">
+<div class="row justify-content-center">
+<div class="col-md-8">
+<div class="card">
+ <div class="card-header">
+    <h2 class="text-center text-primary">Assign Machine</h2>
+   </div>
+     <div class="card-body">
+      {% for message in get_flashed_messages() %}
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+      <form method="post" action="storemachineassignment">
+  
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Select Operator:</b></label>
+    <div class="col-sm-9">
+	<select name="empcode" class="form-control" aria-label="Default select example">
+		{% for code in operator %}
+			<option value="{{code[0]}}">{{code[0]}}-{{code[1]}}</option>
+		{% endfor %}
+	</select>
+    </div>
+</div>
+
+
+
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Select Machine:</b></label>
+    <div class="col-sm-9">
+	<select name="machinecode" class="form-control" aria-label="Default select example">
+		{% for code in machine %}
+			<option value="{{code[0]}}">{{code[0]}}</option>
+		{% endfor %}
+	</select>
+    </div>
+</div>
+
+
+<div class="mb-3 row">
+    <label class="col-sm-3 col-form-label"><b>Select Shift:</b></label>
+    <div class="col-sm-9">
+	<select name="shift" class="form-control" aria-label="Default select example">
+		<option value="1">1</option>
+		<option value="2">2</option>
+		<option value="3">3</option>
+
+	</select>
+    </div>
+</div>
+
+   <div class="text-center">
+   <button type="submit" class="btn btn-primary">Assign Machine</button>
+     </div>
+  </form>
+ </div>
+  </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
